@@ -37,11 +37,16 @@ ex:
 SPOT FOR TODO notes:
 Need to display current yards to first down.
 end TODO
+
+Defensive plays:
+run defense - man blocking, zone blocking
+pass defense - 
+kick defense - 
 """
 import random
 
-def report(currentYardage, currentDown):
-    message = f"Down: {currentDown}, Ball on {currentYardage} yd line"
+def report(currentYardage, yardsRemaining, currentDown):
+    message = f"Down: {currentDown} and {yardsRemaining}, Ball on {currentYardage} yd line"
     print (message)
 
 def getPlayerMove():
@@ -64,12 +69,13 @@ def PlayOneRound():
     """
     startLine = 50
     currentLine = 50
+    yardsRemaining = 10 # yards till 1st down
     down = 1
     keepPossession = True
 
     while keepPossession == True:
         
-        report(currentLine, down)
+        report(currentLine, yardsRemaining, down)
         move = getPlayerMove()
         cpuMove = getCPUMove()
 
@@ -95,8 +101,12 @@ def PlayOneRound():
             print("That play gained you", distance, "yards")
         else:
             print("That play lost you", abs(distance), "yards")
-        print("After that play, you are on ", currentLine)
+        print("After that play, you are on", currentLine)
+
+        # Update what down we're on and yards left to 1st down
         down = down + 1
+        yardsRemaining = yardsRemaining - distance
+        
         if down > 4:
             print("*** TURNOVER ***")
             keepPossession = False
@@ -104,10 +114,14 @@ def PlayOneRound():
             currentLine = 0
             print("*** TOUCHDOWN ***")
             keepPossession = False
-        if currentLine <= startLine - 10: # 10 yard gain
+        
+
+
+        if yardsRemaining < 0:
             print("*** FIRST DOWN ***")
             down = 1
             startLine = currentLine
+            yardsRemaining = 10
         else:
             print("Next play...")
             # gained < 10 yards, so update down and distance
