@@ -33,6 +33,10 @@ ex:
 ("interception", 0) # intercepted pass
 ("turnover", 40)   # other team successfully punts
 
+
+SPOT FOR TODO notes:
+Need to display current yards to first down.
+end TODO
 """
 import random
 
@@ -55,6 +59,8 @@ def PlayOneRound():
     One round here is one offense possession - play until
     you score, or lose possession.
     To simplify: start on 50 yard line, count down.
+    TODO: This is only one offensive possession --
+    the full version should switch offense and defense
     """
     startLine = 50
     currentLine = 50
@@ -161,14 +167,14 @@ def fieldGoalAttempt(cpuMove, yardage):
       distance = distance - 10
     result = "Turnover"
   else: # go for FG
-    odds = 0 
+    odds = 0 # odds are %, 0 to 100
     if cpuMove == "Kick Defense":
-      odds = odds -0.20 # take off 20%
+      odds = odds -20 # take off 20%
     if yardage >= 15 and yardage <= 35:
-      odds = odds + 0.70 # add 70%
+      odds = odds + 70 # add 70%
     else:
-      odds = odds + 0.30
-    roll = random.random() # 0 - 1.0
+      odds = odds + 30
+    roll = random.randrange(1, 100) 
     if roll < odds:
       result = "Field Goal"
       distance = 0
